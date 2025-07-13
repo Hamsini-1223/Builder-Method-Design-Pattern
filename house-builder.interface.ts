@@ -1,0 +1,11 @@
+// house-builder.interface.ts
+import { House } from "./house";
+
+export interface HouseBuilder {
+  addWalls(count: number): this;
+  addDoors(count: number): this;
+  addWindows(count: number): this;
+  addGarage(): this;
+  addGarden(): this;
+  build(): House;
+}

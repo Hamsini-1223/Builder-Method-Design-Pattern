@@ -1,0 +1,23 @@
+{
+  "name": "house-builder-pattern",
+  "version": "1.0.0",
+  "description": "Simple Builder Pattern implementation using House construction example",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node main.ts"
+  },
+  "keywords": [
+    "design-pattern",
+    "builder-pattern",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
