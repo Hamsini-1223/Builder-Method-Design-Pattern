@@ -97,6 +97,76 @@ Basic validation for:
 - Flexible feature addition
 - Clean separation of construction logic
 
+## Sample Output
+
+### Main Menu
+
+```
+House Builder Pattern Demo
+
+==================================================
+What would you like to do?
+1. Build a house manually
+2. Use pre-made house plans (Director)
+3. See demo comparison
+4. Exit
+Enter choice (1-4):
+```
+
+### Manual Building Example
+
+```
+Choose your construction team:
+1. Simple Builder (normal houses)
+2. Fancy Builder (luxury houses)
+Enter choice (1 or 2): 2
+You chose Fancy Builder!
+
+Let's build your house step by step!
+How many walls? (1-10): 4
+Added 4 walls
+How many doors? (1-5): 2
+Added 2 doors
+How many windows? (1-20): 6
+Added 6 windows
+Do you want a garage? (y/n): y
+Added garage
+Do you want a garden? (y/n): y
+Added garden
+
+Your custom house: House with 6 walls, 2 doors, 12 windows, garage, garden
+```
+
+### Director Plans Example
+
+```
+Choose a pre-made house plan:
+1. Basic House (4 walls, 1 door, 4 windows)
+2. Family House (6 walls, 2 doors, 8 windows + garage + garden)
+Enter choice (1 or 2): 2
+Built Family House!
+
+Your house: House with 8 walls, 2 doors, 16 windows, garage, garden
+```
+
+### Demo Comparison
+
+```
+Demo of different builders:
+Simple Builder Result: House with 6 walls, 2 doors, 8 windows, garage, garden
+Fancy Builder Result: House with 8 walls, 2 doors, 16 windows, garage, garden
+Notice how the same plan gives different results!
+```
+
+## Input Validation
+
+Basic validation for:
+
+- Wall count: 1-10
+- Door count: 1-5
+- Window count: 1-20
+- Yes/no inputs for garage and garden
+
 ## Built By
 
 Ms Hamsini S
