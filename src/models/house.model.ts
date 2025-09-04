@@ -1,4 +1,4 @@
-// house.ts
+// src/models/house.model.ts
 export class House {
   walls: number = 0;
   doors: number = 0;

@@ -1,9 +1,11 @@
-// main.ts
+// src/mainApplication.ts
 import { createInterface } from "readline";
-import { SimpleHouseBuilder } from "./simple-house-builder";
-import { FancyHouseBuilder } from "./fancy-house-builder";
-import { HouseDirector } from "./house-director";
-import { HouseBuilder } from "./house-builder.interface";
+import { SimpleHouseBuilder } from "./builders/simpleHouseBuilder";
+import { FancyHouseBuilder } from "./builders/fancyHouseBuilder";
+import { HouseDirector } from "./services/houseDirector";
+import { HouseBuilder } from "./builders/houseBuilder.interface";
+import { validateNumber, validateYesNo } from "./utils/inputValidator";
+import { handleError } from "./utils/errorHandler";
 
 const rl = createInterface({
   input: process.stdin,
@@ -19,23 +21,23 @@ function askQuestion(question: string): Promise<string> {
 }
 
 async function chooseBuilder(): Promise<HouseBuilder> {
-  console.log("\n🏗️ Choose your construction team:");
+  console.log("\nChoose your construction team:");
   console.log("1. Simple Builder (normal houses)");
   console.log("2. Fancy Builder (luxury houses)");
 
   const choice = await askQuestion("Enter choice (1 or 2): ");
 
   if (choice === "2") {
-    console.log("✨ You chose Fancy Builder!");
+    console.log("You chose Fancy Builder!");
     return new FancyHouseBuilder();
   } else {
-    console.log("🔨 You chose Simple Builder!");
+    console.log("You chose Simple Builder!");
     return new SimpleHouseBuilder();
   }
 }
 
 async function useDirector(builder: HouseBuilder): Promise<void> {
-  console.log("\n🏛️ Choose a pre-made house plan:");
+  console.log("\nChoose a pre-made house plan:");
   console.log("1. Basic House (4 walls, 1 door, 4 windows)");
   console.log(
     "2. Family House (6 walls, 2 doors, 8 windows + garage + garden)"
@@ -47,71 +49,74 @@ async function useDirector(builder: HouseBuilder): Promise<void> {
   let house;
   if (choice === "2") {
     house = director.buildFamilyHouse(builder);
-    console.log("🏡 Built Family House!");
+    console.log("Built Family House!");
   } else {
     house = director.buildBasicHouse(builder);
-    console.log("🏠 Built Basic House!");
+    console.log("Built Basic House!");
   }
 
-  console.log(`\n🎉 Your house: ${house.describe()}`);
+  console.log(`\nYour house: ${house.describe()}`);
 }
 
 async function buildManually(builder: HouseBuilder): Promise<void> {
-  console.log("\n🔧 Let's build your house step by step!");
+  console.log("\nLet's build your house step by step!");
 
-  // Get walls
-  const wallsStr = await askQuestion("How many walls? (1-10): ");
-  const walls = parseInt(wallsStr) || 4;
-  builder.addWalls(walls);
-  console.log(`✅ Added ${walls} walls`);
+  try {
+    // Get walls
+    const wallsStr = await askQuestion("How many walls? (1-10): ");
+    const walls = validateNumber(wallsStr, 1, 10);
+    builder.addWalls(walls);
+    console.log(`Added ${walls} walls`);
 
-  // Get doors
-  const doorsStr = await askQuestion("How many doors? (1-5): ");
-  const doors = parseInt(doorsStr) || 1;
-  builder.addDoors(doors);
-  console.log(`✅ Added ${doors} doors`);
+    // Get doors
+    const doorsStr = await askQuestion("How many doors? (1-5): ");
+    const doors = validateNumber(doorsStr, 1, 5);
+    builder.addDoors(doors);
+    console.log(`Added ${doors} doors`);
 
-  // Get windows
-  const windowsStr = await askQuestion("How many windows? (1-20): ");
-  const windows = parseInt(windowsStr) || 4;
-  builder.addWindows(windows);
-  console.log(`✅ Added ${windows} windows`);
+    // Get windows
+    const windowsStr = await askQuestion("How many windows? (1-20): ");
+    const windows = validateNumber(windowsStr, 1, 20);
+    builder.addWindows(windows);
+    console.log(`Added ${windows} windows`);
 
-  // Ask for garage
-  const wantGarage = await askQuestion("Do you want a garage? (y/n): ");
-  if (wantGarage.toLowerCase() === "y" || wantGarage.toLowerCase() === "yes") {
-    builder.addGarage();
-    console.log("✅ Added garage");
+    // Ask for garage
+    const garageStr = await askQuestion("Do you want a garage? (y/n): ");
+    if (validateYesNo(garageStr)) {
+      builder.addGarage();
+      console.log("Added garage");
+    }
+
+    // Ask for garden
+    const gardenStr = await askQuestion("Do you want a garden? (y/n): ");
+    if (validateYesNo(gardenStr)) {
+      builder.addGarden();
+      console.log("Added garden");
+    }
+
+    // Build the house
+    const house = builder.build();
+    console.log(`\nYour custom house: ${house.describe()}`);
+  } catch (error) {
+    handleError(error);
   }
-
-  // Ask for garden
-  const wantGarden = await askQuestion("Do you want a garden? (y/n): ");
-  if (wantGarden.toLowerCase() === "y" || wantGarden.toLowerCase() === "yes") {
-    builder.addGarden();
-    console.log("✅ Added garden");
-  }
-
-  // Build the house
-  const house = builder.build();
-  console.log(`\n🎉 Your custom house: ${house.describe()}`);
 }
 
 async function showDemo(): Promise<void> {
-  console.log("\n📺 Here's a quick demo of different builders:");
+  console.log("\nDemo of different builders:");
 
   const director = new HouseDirector();
 
-  // Same plan with different builders
   const simpleHouse = director.buildFamilyHouse(new SimpleHouseBuilder());
   const fancyHouse = director.buildFamilyHouse(new FancyHouseBuilder());
 
   console.log(`Simple Builder Result: ${simpleHouse.describe()}`);
   console.log(`Fancy Builder Result: ${fancyHouse.describe()}`);
-  console.log("👆 Notice how the same plan gives different results!");
+  console.log("Notice how the same plan gives different results!");
 }
 
 async function main(): Promise<void> {
-  console.log("🏠 Welcome to the House Builder Pattern Demo! 🏠");
+  console.log("House Builder Pattern Demo\n");
 
   let continueBuilding = true;
 
@@ -158,12 +163,9 @@ async function main(): Promise<void> {
     }
   }
 
-  console.log("\n🎉 Thanks for using the House Builder Pattern Demo!");
-  console.log(
-    "You learned: Fluent interface, Different builders, Director pattern!"
-  );
+  console.log("\nThanks for using the House Builder Pattern Demo!");
   rl.close();
 }
 
-// Start the interactive demo
+// Start the application
 main().catch(console.error);

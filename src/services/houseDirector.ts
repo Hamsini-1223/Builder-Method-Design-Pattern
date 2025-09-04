@@ -1,6 +1,6 @@
-// house-director.ts
-import { House } from "./house";
-import { HouseBuilder } from "./house-builder.interface";
+// src/services/houseDirector.ts
+import { House } from "../models/house.model";
+import { HouseBuilder } from "../builders/houseBuilder.interface";
 
 export class HouseDirector {
   buildBasicHouse(builder: HouseBuilder): House {

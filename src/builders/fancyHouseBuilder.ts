@@ -1,6 +1,6 @@
-// fancy-house-builder.ts
-import { House } from "./house";
-import { HouseBuilder } from "./house-builder.interface";
+// src/builders/fancyHouseBuilder.ts
+import { House } from '../models/house.model';
+import { HouseBuilder } from './houseBuilder.interface';
 
 export class FancyHouseBuilder implements HouseBuilder {
   private house: House;
@@ -10,19 +10,18 @@ export class FancyHouseBuilder implements HouseBuilder {
   }
 
   addWalls(count: number): this {
-    // Fancy houses get extra strong walls
+    // Fancy houses get extra walls
     this.house.walls = count + 2;
     return this;
   }
 
   addDoors(count: number): this {
-    // Fancy houses get automatic doors
     this.house.doors = count;
     return this;
   }
 
   addWindows(count: number): this {
-    // Fancy houses get more windows for better light
+    // Fancy houses get double windows
     this.house.windows = count * 2;
     return this;
   }
@@ -39,7 +38,7 @@ export class FancyHouseBuilder implements HouseBuilder {
 
   build(): House {
     const result = this.house;
-    this.house = new House(); // Reset for next build
+    this.house = new House();
     return result;
   }
 }

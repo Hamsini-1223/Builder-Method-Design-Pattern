@@ -1,6 +1,6 @@
-// simple-house-builder.ts
-import { House } from "./house";
-import { HouseBuilder } from "./house-builder.interface";
+// src/builders/simpleHouseBuilder.ts
+import { House } from "../models/house.model";
+import { HouseBuilder } from "./houseBuilder.interface";
 
 export class SimpleHouseBuilder implements HouseBuilder {
   private house: House;
@@ -36,7 +36,7 @@ export class SimpleHouseBuilder implements HouseBuilder {
 
   build(): House {
     const result = this.house;
-    this.house = new House(); // Reset for next build
+    this.house = new House();
     return result;
   }
 }

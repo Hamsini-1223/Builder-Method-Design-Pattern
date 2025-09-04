@@ -1,5 +1,5 @@
-// house-builder.interface.ts
-import { House } from "./house";
+// src/builders/houseBuilder.interface.ts
+import { House } from "../models/house.model";
 
 export interface HouseBuilder {
   addWalls(count: number): this;
