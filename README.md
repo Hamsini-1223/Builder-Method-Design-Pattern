@@ -80,15 +80,6 @@ console.log(house.describe());
 **SimpleHouseBuilder**: Builds exactly what you request
 **FancyHouseBuilder**: Upgrades everything (adds 2 extra walls, doubles windows)
 
-## Input Validation
-
-Basic validation for:
-
-- Wall count: 1-10
-- Door count: 1-5
-- Window count: 1-20
-- Yes/no inputs for garage and garden
-
 ## Pattern Benefits
 
 - Step-by-step object construction
